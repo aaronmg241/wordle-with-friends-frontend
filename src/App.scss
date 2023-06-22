@@ -1,0 +1,35 @@
+$purple: #6f2dbd;
+
+:root {
+	--purple: $purple;
+}
+
+.correct {
+	background: #4cd137;
+	color: white;
+}
+
+.semi-correct {
+	background: #f39c12;
+	color: white;
+}
+
+.wrong {
+	background: grey;
+	color: white;
+}
+
+.unfinished {
+	background: white;
+	color: black;
+	// outline: 2px solid rgb(126, 124, 124);
+}
+
+.correct,
+.wrong,
+.semi-correct {
+	color: white;
+	animation: rotate 0.75s forwards ease-in-out;
+	transition: background-color 1s, color 0.75s;
+	border: none;
+}
