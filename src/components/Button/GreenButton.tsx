@@ -1,7 +1,5 @@
 import { Button, ButtonProps } from '@chakra-ui/react'
 
-type Props = {}
-
 export default function GreenButton(props: ButtonProps) {
 	return (
 		<Button

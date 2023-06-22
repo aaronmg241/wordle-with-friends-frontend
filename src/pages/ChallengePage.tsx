@@ -1,4 +1,4 @@
-import { Flex, useToast, Text, Heading } from '@chakra-ui/react'
+import { Flex, useToast } from '@chakra-ui/react'
 import { useState, useEffect, useRef, useContext } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
