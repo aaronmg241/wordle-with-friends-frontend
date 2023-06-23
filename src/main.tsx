@@ -8,7 +8,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import theme from './styles/theme.ts'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://192.168.2.18:8000'
+axios.defaults.baseURL = 'https://wordle-with-friends-backend-production.up.railway.app'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>

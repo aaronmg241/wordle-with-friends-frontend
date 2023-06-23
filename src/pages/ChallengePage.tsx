@@ -40,7 +40,9 @@ export default function ChallengePage() {
 	useEffect(() => {
 		// Create the websocket connection when the component mounts
 		try {
-			gameSocket.current = new WebSocket(`ws://192.168.2.18:8000/ws/challenge/${challenge.data.challenge_id}`)
+			gameSocket.current = new WebSocket(
+				`ws://wordle-with-friends-backend-production.up.railway.app/ws/challenge/${challenge.data.challenge_id}`
+			)
 		} catch (e) {
 			toast({
 				status: 'error',

@@ -15,7 +15,9 @@ const router = createBrowserRouter([
 		element: <ChallengePage />,
 		loader: async ({ params }) => {
 			try {
-				const response = await axios.get(`http://192.168.2.18:8000/games/challenges/${params.challengeID}`)
+				const response = await axios.get(
+					`https://wordle-with-friends-backend-production.up.railway.app/games/challenges/${params.challengeID}`
+				)
 				return response
 			} catch (error) {
 				console.error(error)
