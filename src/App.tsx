@@ -11,7 +11,7 @@ const router = createBrowserRouter([
 		element: <HomePage />,
 	},
 	{
-		path: 'challenges/:challengeID',
+		path: '/challenges/:challengeID',
 		element: <ChallengePage />,
 		loader: async ({ params }) => {
 			console.log('ATTEMPTING TO NAVIGATE TO CHALLENGE PAGE')
