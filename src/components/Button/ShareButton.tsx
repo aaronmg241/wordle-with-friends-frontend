@@ -15,7 +15,7 @@ export default function ShareButton({}: Props) {
 				try {
 					navigator.clipboard.writeText(window.location.href)
 					toast({
-						title: 'Link copied to clipboard',
+						title: 'Link copied!',
 						status: 'success',
 						duration: 3000,
 					})

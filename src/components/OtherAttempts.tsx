@@ -72,7 +72,7 @@ export default function OtherAttempts({ word }: Props) {
 						Other Attempts
 					</Heading>
 					<Text fontSize={14} color='whiteAlpha.700'>
-						Challenge ID: {challengeID}
+						Challenge ID: {challenge.data.challenge_id}
 					</Text>
 				</Box>
 				<ShareButton />
@@ -82,7 +82,8 @@ export default function OtherAttempts({ word }: Props) {
 					direction='column'
 					maxHeight='80vh'
 					overflowY='auto'
-					padding='20px 0'
+					padding='0'
+					paddingBottom='20px'
 					pr={8}
 					boxSizing='border-box'
 					alignItems='center'

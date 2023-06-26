@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 
-export default function LetterBox({ letter, result, small }: { letter: string; result: number; small?: boolean }) {
+export default function LetterBox({ letter, result, small, index }: { letter: string; result: number; small?: boolean; index?: number }) {
 	let resultClassName
 
 	switch (result) {
@@ -17,6 +17,9 @@ export default function LetterBox({ letter, result, small }: { letter: string; r
 			resultClassName = 'unfinished'
 	}
 
+	const delay = index ? 0.1 + index * 0.4 + 's' : ''
+	console.log(delay)
+
 	return (
 		<Flex
 			height={small ? '20px' : '60px'}
@@ -30,6 +33,7 @@ export default function LetterBox({ letter, result, small }: { letter: string; r
 			textTransform='uppercase'
 			className={'letter-box ' + resultClassName}
 			outline={small ? 'none' : undefined}
+			style={{ animationDelay: delay, transitionDelay: delay }}
 		>
 			{small ? '' : letter}
 		</Flex>

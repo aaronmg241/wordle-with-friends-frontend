@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 import { useState, useEffect, useRef, useContext } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
@@ -153,17 +153,17 @@ export default function ChallengePage() {
 				{guesses.map((guess, rowIndex) => {
 					return (
 						<Flex key={rowIndex} gap={3}>
-							<LetterBox letter={guess[0]} result={results[rowIndex][0]} />
-							<LetterBox letter={guess[1]} result={results[rowIndex][1]} />
-							<LetterBox letter={guess[2]} result={results[rowIndex][2]} />
-							<LetterBox letter={guess[3]} result={results[rowIndex][3]} />
-							<LetterBox letter={guess[4]} result={results[rowIndex][4]} />
+							<LetterBox letter={guess[0]} result={results[rowIndex][0]} index={0} />
+							<LetterBox letter={guess[1]} result={results[rowIndex][1]} index={1} />
+							<LetterBox letter={guess[2]} result={results[rowIndex][2]} index={2} />
+							<LetterBox letter={guess[3]} result={results[rowIndex][3]} index={3} />
+							<LetterBox letter={guess[4]} result={results[rowIndex][4]} index={4} />
 						</Flex>
 					)
 				})}
 				<Keyboard results={results} guesses={guesses} />
 			</Flex>
-			<Flex direction='column' gap='30px'>
+			<Flex direction='column' gap='30px' alignItems='center'>
 				<Menu />
 				<OtherAttempts word={challenge.data.word} />
 			</Flex>

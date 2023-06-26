@@ -10,7 +10,7 @@ export default function Menu({}: Props) {
 	const [showModal, setShowModal] = useState(false)
 	return (
 		<>
-			<Flex gap='20px' maxWidth='100vw' boxSizing='border-box' flexWrap='wrap' alignSelf='center'>
+			<Flex gap='20px' maxWidth='100vw' boxSizing='border-box' flexWrap='wrap'>
 				<GreenButton size='md' onClick={() => setShowModal(true)}>
 					Edit Nickname
 				</GreenButton>

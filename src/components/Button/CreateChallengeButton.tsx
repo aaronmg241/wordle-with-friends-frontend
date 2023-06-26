@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ButtonProps, useToast } from '@chakra-ui/react'
 
@@ -14,9 +14,31 @@ const CreateChallengeButton = (props: ButtonProps) => {
 	const navigate = useNavigate()
 	const toast = useToast()
 
+	const [isCreatingChallenge, setIsCreatingChallenge] = useState(false)
+	const [lastExecutionTime, setLastExecutionTime] = useState(0)
+
 	const createChallenge = async () => {
+		// Check if it's been less than 5 seconds since the last execution
+		if (Date.now() - lastExecutionTime < 5000) {
+			toast({
+				title: `Please wait another ${Math.ceil(
+					(5000 - (Date.now() - lastExecutionTime)) / 1000
+				)}s before creating another challenge.`,
+				status: 'warning',
+				isClosable: true,
+				duration: 4000,
+			})
+			return
+		}
+
+		setIsCreatingChallenge(true)
+		setLastExecutionTime(Date.now())
+
 		axios
-			.post(`/games/challenges/create/${userID}`, { creator: 'app', word: words[Math.floor(Math.random() * words.length)] })
+			.post(`/games/challenges/create/${userID}`, {
+				creator: 'app',
+				word: words[Math.floor(Math.random() * words.length)],
+			})
 			.then((response) => {
 				navigate(`/challenges/${response.data.challenge_id}`)
 				toast({
@@ -35,10 +57,19 @@ const CreateChallengeButton = (props: ButtonProps) => {
 				})
 				console.error(e)
 			})
+			.finally(() => {
+				setIsCreatingChallenge(false)
+			})
 	}
 
 	return (
-		<GreenButton size={{ base: 'md', lg: 'lg' }} onClick={createChallenge} {...props}>
+		<GreenButton
+			size={{ base: 'md', lg: 'lg' }}
+			onClick={createChallenge}
+			isLoading={isCreatingChallenge}
+			isDisabled={isCreatingChallenge}
+			{...props}
+		>
 			Create Challenge
 		</GreenButton>
 	)
