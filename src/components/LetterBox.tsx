@@ -30,7 +30,7 @@ export default function LetterBox({ letter, result, small, index }: { letter: st
 			fontSize='150%'
 			fontWeight='bold'
 			textTransform='uppercase'
-			className={'letter-box ' + resultClassName}
+			className={resultClassName}
 			outline={small ? 'none' : undefined}
 			style={{ animationDelay: delay, transitionDelay: delay }}
 		>

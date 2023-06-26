@@ -9,6 +9,7 @@ import GreenButton from './GreenButton'
 
 import { words } from '../../wordle/words.ts'
 
+// Can be rendered as either a Button or MenuItem
 const CreateChallengeButton = (props: ButtonProps | MenuItemProps) => {
 	const { userID } = useContext(UserContext)
 	const navigate = useNavigate()
