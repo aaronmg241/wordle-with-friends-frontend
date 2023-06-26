@@ -1,4 +1,4 @@
-import { Flex, useToast } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import { useState, useEffect, useRef, useContext } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
@@ -9,16 +9,15 @@ import LetterBox from '../components/LetterBox'
 import { calcResultOfGuess } from '../lib/wordle'
 import UserContext from '../contexts/UserContext'
 import Keyboard from '../components/Keyboard'
+import { SocketContext } from '../contexts/SocketContext'
 
 export default function ChallengePage() {
-	const toast = useToast()
-
 	const challenge = useLoaderData() as any
 	const [guesses, setGuesses] = useState<string[][]>(Array.from(Array(6), () => new Array(5)))
 	const [results, setResults] = useState<number[][]>(Array.from(Array(6), () => new Array(5)))
 	const position = useRef({ row: 0, column: 0 })
-	const gameSocket = useRef<WebSocket | null>(null)
 	const { userID } = useContext(UserContext)
+	const { setChallengeID, sendMessage } = useContext(SocketContext)
 
 	if (!challenge) {
 		return <div>Invalid challenge ID.</div>
@@ -37,28 +36,10 @@ export default function ChallengePage() {
 		}
 	}, [guesses])
 
+	// Sets the ChallengeID for the websocket connection
 	useEffect(() => {
-		// Create the websocket connection when the component mounts
-		try {
-			gameSocket.current = new WebSocket(
-				`wss://wordle-with-friends-backend-production.up.railway.app/ws/challenge/${challenge.data.challenge_id}`
-			)
-		} catch (e) {
-			toast({
-				status: 'error',
-				title: 'There was an error connecting to the game. You can play locally but the changes will not be uploaded to the server.',
-				duration: 9000,
-				isClosable: true,
-			})
-		}
-
-		return () => {
-			// Close the websocket connection when the component unmounts
-			if (gameSocket.current) {
-				gameSocket.current.close()
-			}
-		}
-	}, [])
+		setChallengeID(challenge.data.challenge_id)
+	}, [challenge])
 
 	// Loads existing guesses from server
 	useEffect(() => {
@@ -141,20 +122,7 @@ export default function ChallengePage() {
 		setResults(newResults)
 		position.current = { row: Math.min(5, position.current.row + 1), column: 0 }
 
-		try {
-			if (gameSocket.current) {
-				gameSocket.current.send(JSON.stringify({ challengeID: challenge.data.challenge_id, guess, userID }))
-			}
-		} catch (e) {
-			console.error('error connecting to websocket', e)
-
-			toast({
-				status: 'error',
-				title: 'There was an error sending the message. You can play locally but the changes will not be uploaded to the server.',
-				duration: 9000,
-				isClosable: true,
-			})
-		}
+		sendMessage({ challengeID: challenge.data.challenge_id, guess, userID })
 	}
 
 	return (
@@ -180,7 +148,7 @@ export default function ChallengePage() {
 				})}
 				<Keyboard results={results} guesses={guesses} />
 			</Flex>
-			<OtherAttempts word={challenge.data.word} gameSocket={gameSocket.current} />
+			<OtherAttempts word={challenge.data.word} />
 		</Flex>
 	)
 }

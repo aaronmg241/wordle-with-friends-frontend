@@ -4,6 +4,7 @@ import axios from 'axios'
 import ChallengePage from './pages/ChallengePage'
 import HomePage from './pages/Home'
 import { UserProvider } from './contexts/UserContext'
+import SocketProvider from './contexts/SocketContext'
 
 const router = createBrowserRouter([
 	{
@@ -12,7 +13,11 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/challenges/:challengeID',
-		element: <ChallengePage />,
+		element: (
+			<SocketProvider>
+				<ChallengePage />
+			</SocketProvider>
+		),
 		loader: async ({ params }) => {
 			console.log('ATTEMPTING TO NAVIGATE TO CHALLENGE PAGE')
 			try {

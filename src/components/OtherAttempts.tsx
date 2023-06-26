@@ -6,10 +6,10 @@ import axios from 'axios'
 import MiniWordle from './MiniWordle'
 import ShareButton from './Button/ShareButton'
 import UserContext from '../contexts/UserContext'
+import { SocketContext } from '../contexts/SocketContext'
 
 type Props = {
 	word: string
-	gameSocket: WebSocket | null
 }
 
 type Attempt = {
@@ -17,11 +17,12 @@ type Attempt = {
 	user: { user_id: string; nickname: string }
 }
 
-export default function OtherAttempts({ word, gameSocket }: Props) {
+export default function OtherAttempts({ word }: Props) {
 	const challenge = useLoaderData() as any
 	const challengeID = challenge.data.challenge_id
 	const [attempts, setAttempts] = useState<{ [userId: string]: Attempt }>({})
 	const { userID, nickname } = useContext(UserContext)
+	const { newMessage } = useContext(SocketContext)
 
 	// Loads all other attempts for this challenge
 	useEffect(() => {
@@ -50,25 +51,17 @@ export default function OtherAttempts({ word, gameSocket }: Props) {
 	}, [])
 
 	useEffect(() => {
-		if (gameSocket) {
-			gameSocket.onmessage = function (event) {
-				const response = JSON.parse(event.data)
-				console.log('Received message:', response)
+		// Don't need to update your own guesses
+		if (!newMessage || newMessage.user_id === nickname + userID.substring(0, 10)) return
 
-				// Don't need to update your own guesses
-				if (response.user_id === nickname + userID.substring(0, 10)) return
-
-				setAttempts((prevAttempts) => ({
-					...prevAttempts,
-					[response.user_id]: {
-						guesses: response.guesses,
-						user: { user_id: response.user_id, nickname: response.nickname },
-					},
-				}))
-				// TODO: Handle the received message as needed
-			}
-		}
-	}, [gameSocket])
+		setAttempts((prevAttempts) => ({
+			...prevAttempts,
+			[newMessage.user_id]: {
+				guesses: newMessage.guesses,
+				user: { user_id: newMessage.user_id, nickname: newMessage.nickname },
+			},
+		}))
+	}, [newMessage])
 
 	return (
 		<Card bg='rgb(22,20,17)' minWidth='min(400px, 80vw)'>
