@@ -44,11 +44,12 @@ export default function OtherAttempts({ word }: Props) {
 				})
 				.catch((e) => {
 					console.error(e)
+					setAttempts({})
 				})
 		}
 
 		loadOtherAttempts()
-	}, [])
+	}, [challenge])
 
 	useEffect(() => {
 		// Don't need to update your own guesses
@@ -66,9 +67,14 @@ export default function OtherAttempts({ word }: Props) {
 	return (
 		<Card bg='rgb(22,20,17)' minWidth='min(400px, 80vw)'>
 			<CardHeader display='flex' justifyContent='space-between' gap='30px' flexDirection={{ base: 'column', md: 'row' }}>
-				<Heading size='lg' color='white'>
-					Other Attempts
-				</Heading>
+				<Box>
+					<Heading size='lg' color='white'>
+						Other Attempts
+					</Heading>
+					<Text fontSize={14} color='whiteAlpha.700'>
+						Challenge ID: {challengeID}
+					</Text>
+				</Box>
 				<ShareButton />
 			</CardHeader>
 			<CardBody maxH='80vh' overflowY={'auto'}>

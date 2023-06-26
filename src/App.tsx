@@ -19,7 +19,6 @@ const router = createBrowserRouter([
 			</SocketProvider>
 		),
 		loader: async ({ params }) => {
-			console.log('ATTEMPTING TO NAVIGATE TO CHALLENGE PAGE')
 			try {
 				const response = await axios.get(
 					`https://wordle-with-friends-backend-production.up.railway.app/games/challenges/${params.challengeID}`

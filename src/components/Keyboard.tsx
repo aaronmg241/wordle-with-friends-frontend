@@ -49,7 +49,7 @@ export default function Keyboard({ results, guesses }: Props) {
 							const color = colorsByKey[key.toLowerCase()]
 							return (
 								<Button
-									minWidth={{ base: '32px', sm: '40px' }}
+									minWidth={{ base: '30px', sm: '40px' }}
 									minHeight={{ base: '50px', sm: '60px' }}
 									padding={key === 'Enter' || key === 'Delete' ? '0 6px' : 0}
 									borderRadius='4px'

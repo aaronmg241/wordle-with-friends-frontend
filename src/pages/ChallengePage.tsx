@@ -10,13 +10,15 @@ import { calcResultOfGuess } from '../lib/wordle'
 import UserContext from '../contexts/UserContext'
 import Keyboard from '../components/Keyboard'
 import { SocketContext } from '../contexts/SocketContext'
+import ChangeNicknameModal from '../components/ChangeNicknameModal'
+import Menu from '../components/Menu'
 
 export default function ChallengePage() {
 	const challenge = useLoaderData() as any
 	const [guesses, setGuesses] = useState<string[][]>(Array.from(Array(6), () => new Array(5)))
 	const [results, setResults] = useState<number[][]>(Array.from(Array(6), () => new Array(5)))
 	const position = useRef({ row: 0, column: 0 })
-	const { userID } = useContext(UserContext)
+	const { userID, isNewUser, setIsNewUser } = useContext(UserContext)
 	const { setChallengeID, sendMessage } = useContext(SocketContext)
 
 	if (!challenge) {
@@ -29,6 +31,8 @@ export default function ChallengePage() {
 	// state such as 'guesses'. The alternative is to useRefs to reference the required state in these functions. I chose this approach because the performance
 	// does not matter and it results in cleaner code with regards to the state.
 	useEffect(() => {
+		// Don't add the event listener while we are still editing the nickname,
+		// as this would type in a word while we change nicknames
 		window.addEventListener('keydown', onKeyPress)
 
 		return () => {
@@ -69,11 +73,22 @@ export default function ChallengePage() {
 				})
 				.catch(() => {})
 		}
+		position.current = { row: 0, column: 0 }
+		setGuesses(Array.from(Array(6), () => new Array(5)))
+		setResults(Array.from(Array(6), () => new Array(5)))
 		getGuesses()
-	}, [])
+	}, [challenge])
 
 	function onKeyPress(e: KeyboardEvent) {
 		if (isGameOver) return
+
+		const activeElement = document.activeElement
+
+		// Ignore key presses if an input element is focused
+		if (activeElement && activeElement.tagName.toLowerCase() === 'input') {
+			return
+		}
+
 		if (e.key === 'Enter') {
 			handleEnterPressed(e)
 		} else if (e.key === 'Backspace') {
@@ -148,7 +163,11 @@ export default function ChallengePage() {
 				})}
 				<Keyboard results={results} guesses={guesses} />
 			</Flex>
-			<OtherAttempts word={challenge.data.word} />
+			<Flex direction='column' gap='30px'>
+				<Menu />
+				<OtherAttempts word={challenge.data.word} />
+			</Flex>
+			{isNewUser && <ChangeNicknameModal onClose={() => setIsNewUser(false)} />}
 		</Flex>
 	)
 }

@@ -1,35 +1,13 @@
-import { Heading, Text, useToast, Flex, Image, Input } from '@chakra-ui/react'
+import { Heading, Text, Flex, Image, Input } from '@chakra-ui/react'
 import { useContext } from 'react'
 import '../App.scss'
-import axios from 'axios'
 
-import { words } from '../wordle/words.ts'
-import { useNavigate } from 'react-router-dom'
 import wordleImage from '../images/wordle.jpg'
-import GreenButton from '../components/Button/GreenButton.tsx'
 import UserContext from '../contexts/UserContext.tsx'
+import CreateChallengeButton from '../components/Button/CreateChallengeButton.tsx'
 
 const HomePage = () => {
-	const { userID, nickname, changeNickname } = useContext(UserContext)
-	const navigate = useNavigate()
-	const toast = useToast()
-
-	const createChallenge = async () => {
-		axios
-			.post(`/games/challenges/create/${userID}`, { creator: 'app', word: words[Math.floor(Math.random() * words.length)] })
-			.then((response) => {
-				navigate(`/challenges/${response.data.challenge_id}`)
-			})
-			.catch((e) => {
-				toast({
-					title: 'There was an error creating the challenge.',
-					status: 'error',
-					isClosable: true,
-					duration: 5000,
-				})
-				console.error(e)
-			})
-	}
+	const { nickname, changeNickname } = useContext(UserContext)
 
 	return (
 		<Flex
@@ -50,11 +28,7 @@ const HomePage = () => {
 				<Text fontSize={{ base: 'md', lg: 'xl' }} textAlign='left' color='rgb(240, 240, 240, 0.7)'>
 					Create a challenge below and share the link to play wordle against your friends!
 				</Text>
-				<Flex direction='column' alignItems='start' mt={12}>
-					<GreenButton size={{ base: 'md', lg: 'lg' }} onClick={createChallenge}>
-						Create Challenge
-					</GreenButton>
-				</Flex>
+				<CreateChallengeButton mt={12} />
 
 				<Flex mt={12} alignItems='start' direction='column' gap={2}>
 					<Text fontSize='sm' color='rgb(240, 240, 240, 0.7)'>
@@ -70,7 +44,6 @@ const HomePage = () => {
 						onBlur={(e) => changeNickname(e.target.value)}
 					/>
 				</Flex>
-				{/* <Divider borderColor='rgb(0, 0, 0, 0.4)' width='100%' mt={16} mb={16} /> */}
 			</Flex>
 		</Flex>
 	)

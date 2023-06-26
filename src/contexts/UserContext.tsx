@@ -6,12 +6,16 @@ type UserContextType = {
 	userID: string
 	nickname: string
 	changeNickname: (newName: string) => void
+	isNewUser: boolean
+	setIsNewUser: Function
 }
 
 const UserContext = createContext<UserContextType>({
 	userID: '',
 	nickname: '',
 	changeNickname: () => {},
+	isNewUser: false,
+	setIsNewUser: () => {},
 })
 
 export function UserProvider({ children }: { children: React.ReactElement }) {
@@ -23,6 +27,7 @@ export function UserProvider({ children }: { children: React.ReactElement }) {
 	const userID = storedUserID ? storedUserID : uuidv4()
 	const storedNickname = localStorage.getItem('nickname') as string
 	const [nickname, setNickname] = useState<string>(storedNickname ? storedNickname : defaultNickname)
+	const [isNewUser, setIsNewUser] = useState<boolean>(!storedUserID)
 
 	const creatingUser = useRef<boolean>(false)
 
@@ -35,6 +40,7 @@ export function UserProvider({ children }: { children: React.ReactElement }) {
 				.then(() => {
 					localStorage.setItem('userID', userID)
 					localStorage.setItem('nickname', nickname)
+					setIsNewUser(true)
 				})
 				.catch((e) => {
 					console.error('Error creating user', e)
@@ -46,6 +52,8 @@ export function UserProvider({ children }: { children: React.ReactElement }) {
 	}, [])
 
 	const changeNickname = (newName: string) => {
+		if (isNewUser) setIsNewUser(false)
+
 		axios
 			.put(`/games/user/update/${userID}`, { nickname: newName })
 			.then(() => {
@@ -61,6 +69,8 @@ export function UserProvider({ children }: { children: React.ReactElement }) {
 		userID,
 		nickname,
 		changeNickname,
+		isNewUser,
+		setIsNewUser,
 	}
 
 	return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
