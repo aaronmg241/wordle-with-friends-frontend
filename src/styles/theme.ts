@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
+import { menuTheme } from './MenuTheme'
 
 const theme = extendTheme({
 	colors: {
@@ -9,6 +10,9 @@ const theme = extendTheme({
 	fonts: {
 		heading: `'Poppins', sans-serif`,
 		body: `'Poppins', sans-serif`,
+	},
+	components: {
+		Menu: menuTheme,
 	},
 })
 

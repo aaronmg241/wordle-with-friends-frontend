@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ButtonProps, useToast } from '@chakra-ui/react'
+import { ButtonProps, useToast, MenuItemProps } from '@chakra-ui/react'
 
 import axios from 'axios'
 
@@ -9,7 +9,7 @@ import GreenButton from './GreenButton'
 
 import { words } from '../../wordle/words.ts'
 
-const CreateChallengeButton = (props: ButtonProps) => {
+const CreateChallengeButton = (props: ButtonProps | MenuItemProps) => {
 	const { userID } = useContext(UserContext)
 	const navigate = useNavigate()
 	const toast = useToast()
@@ -62,8 +62,10 @@ const CreateChallengeButton = (props: ButtonProps) => {
 			})
 	}
 
+	const ButtonComponent = props.as || GreenButton
+
 	return (
-		<GreenButton
+		<ButtonComponent
 			size={{ base: 'md', lg: 'lg' }}
 			onClick={createChallenge}
 			isLoading={isCreatingChallenge}
@@ -71,7 +73,7 @@ const CreateChallengeButton = (props: ButtonProps) => {
 			{...props}
 		>
 			Create Challenge
-		</GreenButton>
+		</ButtonComponent>
 	)
 }
 

@@ -11,7 +11,7 @@ import UserContext from '../contexts/UserContext'
 import Keyboard from '../components/Keyboard'
 import { SocketContext } from '../contexts/SocketContext'
 import ChangeNicknameModal from '../components/ChangeNicknameModal'
-import Menu from '../components/Menu'
+import Menu from '../components/Menu/Menu'
 
 export default function ChallengePage() {
 	const challenge = useLoaderData() as any
@@ -164,7 +164,6 @@ export default function ChallengePage() {
 				<Keyboard results={results} guesses={guesses} />
 			</Flex>
 			<Flex direction='column' gap='30px' alignItems='center'>
-				<Menu />
 				<OtherAttempts word={challenge.data.word} />
 			</Flex>
 			{isNewUser && <ChangeNicknameModal onClose={() => setIsNewUser(false)} />}

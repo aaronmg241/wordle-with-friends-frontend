@@ -4,9 +4,10 @@ import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
 
 import MiniWordle from './MiniWordle'
-import ShareButton from './Button/ShareButton'
+import ShareButton from './Menu/ShareMenuItem'
 import UserContext from '../contexts/UserContext'
 import { SocketContext } from '../contexts/SocketContext'
+import OptionsMenu from './Menu/Menu'
 
 type Props = {
 	word: string
@@ -65,7 +66,7 @@ export default function OtherAttempts({ word }: Props) {
 	}, [newMessage])
 
 	return (
-		<Card bg='rgb(22,20,17)' minWidth='min(400px, 80vw)'>
+		<Card bg='inherit' minWidth='min(400px, 80vw)' boxShadow='none'>
 			<CardHeader display='flex' justifyContent='space-between' gap='30px' flexDirection={{ base: 'column', md: 'row' }}>
 				<Box>
 					<Heading size='lg' color='white'>
@@ -75,7 +76,7 @@ export default function OtherAttempts({ word }: Props) {
 						Challenge ID: {challenge.data.challenge_id}
 					</Text>
 				</Box>
-				<ShareButton />
+				<OptionsMenu />
 			</CardHeader>
 			<CardBody maxH='80vh' overflowY={'auto'}>
 				<Flex

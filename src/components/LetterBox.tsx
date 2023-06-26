@@ -18,7 +18,6 @@ export default function LetterBox({ letter, result, small, index }: { letter: st
 	}
 
 	const delay = index ? 0.1 + index * 0.4 + 's' : ''
-	console.log(delay)
 
 	return (
 		<Flex

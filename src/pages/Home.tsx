@@ -5,6 +5,8 @@ import '../App.scss'
 import wordleImage from '../images/wordle.jpg'
 import UserContext from '../contexts/UserContext.tsx'
 import CreateChallengeButton from '../components/Button/CreateChallengeButton.tsx'
+import GreenButton from '../components/Button/GreenButton.tsx'
+import RecentChallengesDrawer from '../components/RecentChallengesDrawer.tsx'
 
 const HomePage = () => {
 	const { nickname, changeNickname } = useContext(UserContext)
@@ -26,9 +28,21 @@ const HomePage = () => {
 					Play Wordle Against Your Friends.
 				</Heading>
 				<Text fontSize={{ base: 'md', lg: 'xl' }} textAlign='left' color='rgb(240, 240, 240, 0.7)'>
-					Create a challenge below and share the link to play wordle against your friends!
+					Create or find a challenge below and share the link to play wordle against your friends!
 				</Text>
-				<CreateChallengeButton mt={12} />
+				<Flex
+					gap={{ base: 4, sm: 8 }}
+					mt={12}
+					alignItems={{ base: 'center', sm: 'center' }}
+					direction={{ base: 'column', sm: 'row' }}
+					alignSelf='center'
+				>
+					<CreateChallengeButton />
+					<Text fontSize={16} color={'whiteAlpha.700'}>
+						or
+					</Text>
+					<RecentChallengesDrawer />
+				</Flex>
 
 				<Flex mt={12} alignItems='start' direction='column' gap={2}>
 					<Text fontSize='sm' color='rgb(240, 240, 240, 0.7)'>

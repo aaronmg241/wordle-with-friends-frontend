@@ -1,16 +1,10 @@
-import { useToast } from '@chakra-ui/react'
-import { LinkIcon } from '@chakra-ui/icons'
-import GreenButton from './GreenButton'
+import { MenuItem, MenuItemProps, useToast } from '@chakra-ui/react'
 
-type Props = {}
-
-export default function ShareButton({}: Props) {
+export default function ShareMenuItem(props: MenuItemProps) {
 	const toast = useToast()
 
 	return (
-		<GreenButton
-			size='md'
-			leftIcon={<LinkIcon />}
+		<MenuItem
 			onClick={() => {
 				try {
 					navigator.clipboard.writeText(window.location.href)
@@ -28,8 +22,9 @@ export default function ShareButton({}: Props) {
 					})
 				}
 			}}
+			{...props}
 		>
 			Share Game
-		</GreenButton>
+		</MenuItem>
 	)
 }
