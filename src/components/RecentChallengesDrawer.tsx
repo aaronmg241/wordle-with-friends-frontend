@@ -62,7 +62,32 @@ export default function RecentChallengesDrawer() {
 					<DrawerCloseButton />
 					<DrawerHeader>Recent Challenges</DrawerHeader>
 
-					<DrawerBody mt={4} paddingLeft='20px' pb={8}>
+					<DrawerBody
+						mt={4}
+						paddingLeft='20px'
+						mr={2}
+						maxHeight='85vh'
+						pb={8}
+						css={{
+							'&::-webkit-scrollbar': {
+								width: '8px',
+								marginRight: 12,
+							},
+							'&::-webkit-scrollbar-track': {
+								backgroundColor: 'transparent',
+								borderRadius: '3px',
+							},
+
+							'&::-webkit-scrollbar-thumb': {
+								backgroundColor: 'rgb(30, 25, 22)',
+								borderRadius: '3px',
+							},
+
+							'&::-webkit-scrollbar-thumb:hover': {
+								backgroundColor: 'rgba(0, 0, 0, 0.3)',
+							},
+						}}
+					>
 						{recentChallenges.map((challenge: Challenge, index: number) => {
 							const formattedDate = dayjs(challenge.created_at).fromNow()
 
