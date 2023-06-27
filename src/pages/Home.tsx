@@ -5,7 +5,6 @@ import '../App.scss'
 import wordleImage from '../images/wordle.jpg'
 import UserContext from '../contexts/UserContext.tsx'
 import CreateChallengeButton from '../components/Button/CreateChallengeButton.tsx'
-import GreenButton from '../components/Button/GreenButton.tsx'
 import RecentChallengesDrawer from '../components/RecentChallengesDrawer.tsx'
 
 const HomePage = () => {
