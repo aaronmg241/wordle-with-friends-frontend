@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import { useState, useEffect, useRef, useContext } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
@@ -11,7 +11,6 @@ import UserContext from '../contexts/UserContext'
 import Keyboard from '../components/Keyboard'
 import { SocketContext } from '../contexts/SocketContext'
 import ChangeNicknameModal from '../components/ChangeNicknameModal'
-import Menu from '../components/Menu/Menu'
 
 export default function ChallengePage() {
 	const challenge = useLoaderData() as any

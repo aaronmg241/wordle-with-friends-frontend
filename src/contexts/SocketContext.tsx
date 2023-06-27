@@ -1,6 +1,5 @@
 import { useToast } from '@chakra-ui/react'
 import React, { createContext, useEffect, useRef, useState } from 'react'
-import { WebSocketUrl } from '../Server'
 
 type SocketContextType = {
 	gameSocket: WebSocket | null
@@ -41,8 +40,9 @@ const SocketProvider = ({ children }: SocketProviderProps) => {
 	}, [challengeID])
 
 	const establishConnection = () => {
+		console.log(import.meta.env.VITE_WEBSOCKET_URL)
 		try {
-			gameSocketRef.current = new WebSocket(`${WebSocketUrl}${challengeID}`)
+			gameSocketRef.current = new WebSocket(`${import.meta.env.VITE_WEBSOCKET_URL}${challengeID}`)
 			gameSocketRef.current.onmessage = function (event) {
 				const response = JSON.parse(event.data)
 				setNewMessage(response)

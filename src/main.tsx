@@ -7,9 +7,8 @@ import './App.scss'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './styles/theme.ts'
 import axios from 'axios'
-import { DatabaseURL } from './Server.ts'
 
-axios.defaults.baseURL = DatabaseURL
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>

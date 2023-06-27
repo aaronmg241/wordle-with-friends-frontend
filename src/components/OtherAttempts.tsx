@@ -4,7 +4,6 @@ import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
 
 import MiniWordle from './MiniWordle'
-import ShareButton from './Menu/ShareMenuItem'
 import UserContext from '../contexts/UserContext'
 import { SocketContext } from '../contexts/SocketContext'
 import OptionsMenu from './Menu/Menu'

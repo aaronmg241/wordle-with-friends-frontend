@@ -5,7 +5,6 @@ import ChallengePage from './pages/ChallengePage'
 import HomePage from './pages/Home'
 import { UserProvider } from './contexts/UserContext'
 import SocketProvider from './contexts/SocketContext'
-import { DatabaseURL } from './Server'
 
 const router = createBrowserRouter([
 	{
@@ -21,7 +20,7 @@ const router = createBrowserRouter([
 		),
 		loader: async ({ params }) => {
 			try {
-				return await axios.get(`${DatabaseURL}/games/challenges/${params.challengeID}`)
+				return await axios.get(`${import.meta.env.VITE_SERVER_URL}/games/challenges/${params.challengeID}`)
 			} catch (error) {
 				console.error('ERROR', error)
 				return null
@@ -31,6 +30,7 @@ const router = createBrowserRouter([
 ])
 
 function App() {
+	console.log(import.meta.env.VITE_SERVER_URL)
 	return (
 		<>
 			<UserProvider>
