@@ -7,8 +7,9 @@ import './App.scss'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './styles/theme.ts'
 import axios from 'axios'
+import { DatabaseURL } from './Server.ts'
 
-axios.defaults.baseURL = 'https://wordle-with-friends-backend-production.up.railway.app'
+axios.defaults.baseURL = DatabaseURL
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>

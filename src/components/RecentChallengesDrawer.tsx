@@ -1,24 +1,13 @@
-import {
-	useDisclosure,
-	Button,
-	Drawer,
-	DrawerOverlay,
-	DrawerContent,
-	DrawerCloseButton,
-	DrawerHeader,
-	DrawerBody,
-	DrawerFooter,
-	Input,
-} from '@chakra-ui/react'
+import { useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody } from '@chakra-ui/react'
 import GreenButton from './Button/GreenButton'
 
-export default function RecentChallengesDrawer({ small }: { small?: boolean }) {
+export default function RecentChallengesDrawer() {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 
 	return (
 		<>
-			<GreenButton onClick={onOpen} size={small ? 'md' : 'lg'}>
-				Find Recent Challenges
+			<GreenButton onClick={onOpen} size='md'>
+				Find A Challenge
 			</GreenButton>
 			<Drawer isOpen={isOpen} placement='right' onClose={onClose}>
 				<DrawerOverlay />

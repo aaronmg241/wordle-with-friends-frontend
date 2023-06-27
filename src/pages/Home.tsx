@@ -37,7 +37,7 @@ const HomePage = () => {
 					direction={{ base: 'column', sm: 'row' }}
 					alignSelf='center'
 				>
-					<CreateChallengeButton />
+					<CreateChallengeButton size='md' />
 					<Text fontSize={16} color={'whiteAlpha.700'}>
 						or
 					</Text>

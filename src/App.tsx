@@ -5,6 +5,7 @@ import ChallengePage from './pages/ChallengePage'
 import HomePage from './pages/Home'
 import { UserProvider } from './contexts/UserContext'
 import SocketProvider from './contexts/SocketContext'
+import { DatabaseURL } from './Server'
 
 const router = createBrowserRouter([
 	{
@@ -20,10 +21,7 @@ const router = createBrowserRouter([
 		),
 		loader: async ({ params }) => {
 			try {
-				const response = await axios.get(
-					`https://wordle-with-friends-backend-production.up.railway.app/games/challenges/${params.challengeID}`
-				)
-				return response
+				return await axios.get(`${DatabaseURL}/games/challenges/${params.challengeID}`)
 			} catch (error) {
 				console.error('ERROR', error)
 				return null

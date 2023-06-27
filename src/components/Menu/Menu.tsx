@@ -25,23 +25,11 @@ export default function OptionsMenu({}: Props) {
 					<ShareMenuItem bg='inherit' icon={<LinkIcon boxSize='1.25em' />} />
 					<CreateChallengeButton as={MenuItem} bg='inherit' icon={<AddIcon boxSize='1.25em' />} />
 					<MenuItem bg='inherit' icon={<SearchIcon boxSize='1.25em' />}>
-						Find Recent Challenge
+						Find Recent Challenges
 					</MenuItem>
 				</MenuList>
 			</Menu>
 			{showModal && <ChangeNicknameModal onClose={() => setShowModal(false)} />}
 		</>
 	)
-	// return (
-	// 	<>
-	// 		<Flex gap='20px' maxWidth='100vw' boxSizing='border-box' flexWrap='wrap' padding='5vw'>
-	// 			<GreenButton size='md' onClick={() => setShowModal(true)}>
-	// 				Edit Nickname
-	// 			</GreenButton>
-	// 			<CreateChallengeButton size='md' />
-	// 			<RecentChallengesDrawer small />
-	// 		</Flex>
-	// 		{showModal && <ChangeNicknameModal onClose={() => setShowModal(false)} />}
-	// 	</>
-	// )
 }

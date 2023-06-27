@@ -1,5 +1,6 @@
 import { useToast } from '@chakra-ui/react'
 import React, { createContext, useEffect, useRef, useState } from 'react'
+import { WebSocketUrl } from '../Server'
 
 type SocketContextType = {
 	gameSocket: WebSocket | null
@@ -41,7 +42,7 @@ const SocketProvider = ({ children }: SocketProviderProps) => {
 
 	const establishConnection = () => {
 		try {
-			gameSocketRef.current = new WebSocket(`wss://wordle-with-friends-backend-production.up.railway.app/ws/challenge/${challengeID}`)
+			gameSocketRef.current = new WebSocket(`${WebSocketUrl}${challengeID}`)
 			gameSocketRef.current.onmessage = function (event) {
 				const response = JSON.parse(event.data)
 				setNewMessage(response)
