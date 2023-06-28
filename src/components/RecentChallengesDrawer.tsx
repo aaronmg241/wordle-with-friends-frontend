@@ -113,6 +113,7 @@ export default function RecentChallengesDrawer({ DrawerButtonComponent }: { Draw
 									fontWeight='regular'
 									mb={2}
 									onClick={() => {
+										onClose()
 										navigate(`/challenges/${challenge.challenge_id}`)
 									}}
 								>
