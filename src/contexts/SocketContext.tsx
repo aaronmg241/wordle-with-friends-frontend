@@ -40,7 +40,6 @@ const SocketProvider = ({ children }: SocketProviderProps) => {
 	}, [challengeID])
 
 	const establishConnection = () => {
-		console.log(import.meta.env.VITE_WEBSOCKET_URL)
 		try {
 			gameSocketRef.current = new WebSocket(`${import.meta.env.VITE_WEBSOCKET_URL}${challengeID}`)
 			gameSocketRef.current.onmessage = function (event) {

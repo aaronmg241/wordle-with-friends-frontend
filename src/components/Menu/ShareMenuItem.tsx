@@ -1,10 +1,10 @@
-import { MenuItem, MenuItemProps, useToast } from '@chakra-ui/react'
+import { Button, MenuItemProps, useToast } from '@chakra-ui/react'
 
-export default function ShareMenuItem(props: MenuItemProps) {
+export default function ShareButton(props: MenuItemProps) {
 	const toast = useToast()
 
 	return (
-		<MenuItem
+		<Button
 			onClick={() => {
 				try {
 					navigator.clipboard.writeText(window.location.href)
@@ -25,6 +25,6 @@ export default function ShareMenuItem(props: MenuItemProps) {
 			{...props}
 		>
 			Share Game
-		</MenuItem>
+		</Button>
 	)
 }

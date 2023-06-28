@@ -75,7 +75,6 @@ export default function OtherAttempts({ word }: Props) {
 						Challenge ID: {challenge.data.challenge_id}
 					</Text>
 				</Box>
-				<OptionsMenu />
 			</CardHeader>
 			<CardBody maxH='80vh' overflowY={'auto'}>
 				<Flex

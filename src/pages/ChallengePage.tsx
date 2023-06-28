@@ -11,6 +11,7 @@ import UserContext from '../contexts/UserContext'
 import Keyboard from '../components/Keyboard'
 import { SocketContext } from '../contexts/SocketContext'
 import ChangeNicknameModal from '../components/ChangeNicknameModal'
+import OptionsMenu from '../components/Menu/Menu'
 
 export default function ChallengePage() {
 	const challenge = useLoaderData() as any
@@ -143,10 +144,10 @@ export default function ChallengePage() {
 		<Flex
 			justifyContent={{ base: 'start', lg: 'center' }}
 			gap='5vw'
-			alignItems='center'
+			alignItems={{ base: 'center', sm: 'start' }}
 			direction={{ base: 'column', lg: 'row' }}
 			minHeight='100vh'
-			padding='5vh 0'
+			padding='10vh 0 5vh'
 		>
 			<Flex direction='column' alignItems='center' gap={4}>
 				{guesses.map((guess, rowIndex) => {
@@ -162,7 +163,8 @@ export default function ChallengePage() {
 				})}
 				<Keyboard results={results} guesses={guesses} />
 			</Flex>
-			<Flex direction='column' gap='30px' alignItems='center'>
+			<Flex direction='column' gap='30px' alignItems='start' alignSelf='start' pl={2}>
+				<OptionsMenu includeShareButton />
 				<OtherAttempts word={challenge.data.word} />
 			</Flex>
 			{isNewUser && <ChangeNicknameModal onClose={() => setIsNewUser(false)} />}

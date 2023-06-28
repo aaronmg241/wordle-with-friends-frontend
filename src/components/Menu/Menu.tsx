@@ -1,34 +1,67 @@
-import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import { SimpleGrid, useToast } from '@chakra-ui/react'
+import { AddIcon, EditIcon, LinkIcon, SearchIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
+
+import MenuGridButton from './MenuGridButton'
 import ChangeNicknameModal from '../ChangeNicknameModal'
-import GreenButton from '../Button/GreenButton'
-import ShareMenuItem from './ShareMenuItem'
-// import RecentChallengesDrawer from '../RecentChallengesDrawer'
-import { AddIcon, ChevronDownIcon, EditIcon, LinkIcon, SearchIcon } from '@chakra-ui/icons'
-import CreateChallengeButton from '../Button/CreateChallengeButton'
+import useCreateChallenge from '../../hooks/useCreateChallenge'
+import RecentChallengesDrawer from '../RecentChallengesDrawer'
 
-type Props = {}
+type Props = {
+	includeShareButton?: boolean
+}
 
-export default function OptionsMenu({}: Props) {
+export default function OptionsMenu({ includeShareButton }: Props) {
 	const [showModal, setShowModal] = useState(false)
+	const { createChallenge } = useCreateChallenge()
+
+	const toast = useToast()
 
 	return (
 		<>
-			<Menu>
-				<MenuButton as={GreenButton} rightIcon={<ChevronDownIcon />} size='md' _active={{ opacity: 0.6 }}>
-					Actions
-				</MenuButton>
-				<MenuList bg='rgb(35, 32, 29)' color='white'>
-					<MenuItem bg='inherit' onClick={() => setShowModal(true)} icon={<EditIcon boxSize='1.25em' />}>
-						Edit Nickname
-					</MenuItem>
-					<ShareMenuItem bg='inherit' icon={<LinkIcon boxSize='1.25em' />} />
-					<CreateChallengeButton as={MenuItem} bg='inherit' icon={<AddIcon boxSize='1.25em' />} />
-					<MenuItem bg='inherit' icon={<SearchIcon boxSize='1.25em' />}>
-						Find Recent Challenges
-					</MenuItem>
-				</MenuList>
-			</Menu>
+			<SimpleGrid bg='transparent' color='white' as={SimpleGrid} columns={2} gridRowGap={4} gridColumnGap={4} p={2}>
+				<MenuGridButton onClick={createChallenge} icon={<AddIcon boxSize={4} />}>
+					Create Challenge
+				</MenuGridButton>
+
+				{includeShareButton && (
+					<MenuGridButton
+						onClick={() => {
+							try {
+								navigator.clipboard.writeText(window.location.href)
+								toast({
+									title: 'Link copied!',
+									status: 'success',
+									duration: 3000,
+								})
+							} catch (e) {
+								toast({
+									title: 'Could not copy link. You can manually copy the link from the browser URL.',
+									status: 'error',
+									duration: 6000,
+									isClosable: true,
+								})
+							}
+						}}
+						icon={<LinkIcon boxSize={4} />}
+					>
+						Share Game
+					</MenuGridButton>
+				)}
+
+				<RecentChallengesDrawer
+					DrawerButtonComponent={<MenuGridButton icon={<SearchIcon boxSize={4} />}>Find Challenge</MenuGridButton>}
+				/>
+
+				<MenuGridButton
+					onClick={() => {
+						setShowModal(true)
+					}}
+					icon={<EditIcon boxSize={4} />}
+				>
+					Edit Nickname
+				</MenuGridButton>
+			</SimpleGrid>
 			{showModal && <ChangeNicknameModal onClose={() => setShowModal(false)} />}
 		</>
 	)

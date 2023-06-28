@@ -1,14 +1,13 @@
-import { Heading, Text, Flex, Image, Input } from '@chakra-ui/react'
+import { Heading, Text, Flex, Image } from '@chakra-ui/react'
 import { useContext } from 'react'
 import '../App.scss'
 
 import wordleImage from '../images/wordle.jpg'
 import UserContext from '../contexts/UserContext.tsx'
-import CreateChallengeButton from '../components/Button/CreateChallengeButton.tsx'
-import RecentChallengesDrawer from '../components/RecentChallengesDrawer.tsx'
+import OptionsMenu from '../components/Menu/Menu.tsx'
 
 const HomePage = () => {
-	const { nickname, changeNickname } = useContext(UserContext)
+	const { nickname } = useContext(UserContext)
 
 	return (
 		<Flex
@@ -23,40 +22,19 @@ const HomePage = () => {
 		>
 			<Image src={wordleImage} height={{ base: '25vh', lg: '450px' }} mr='5vw' />
 			<Flex textAlign='center' width='min(90vw, 500px)' flexDirection='column' justifyContent='center' alignItems='start'>
-				<Heading as='h1' fontSize={{ base: '4xl', lg: '5xl' }} color='white' mb={5} textAlign='left'>
+				<Heading as='h1' fontSize={{ base: '4xl', lg: '5xl' }} color='white' textAlign='left' mb={4}>
 					Play Wordle Against Your Friends.
 				</Heading>
-				<Text fontSize={{ base: 'md', lg: 'xl' }} textAlign='left' color='rgb(240, 240, 240, 0.7)'>
+				<Text fontSize='sm' color='rgb(240, 240, 240, 0.6)' mb={0}>
+					Your nickname
+				</Text>
+				<Text fontSize='xl' color='#4cd137' mb={4} fontWeight={500}>
+					{nickname}
+				</Text>
+				<Text fontSize={{ base: 'md', lg: 'xl' }} textAlign='left' color='white' mb={8}>
 					Create or find a challenge below and share the link to play wordle against your friends!
 				</Text>
-				<Flex
-					gap={{ base: 4, sm: 8 }}
-					mt={12}
-					alignItems={{ base: 'center', sm: 'center' }}
-					direction={{ base: 'column', sm: 'row' }}
-					alignSelf='center'
-				>
-					<CreateChallengeButton size='md' />
-					<Text fontSize={16} color={'whiteAlpha.700'}>
-						or
-					</Text>
-					<RecentChallengesDrawer />
-				</Flex>
-
-				<Flex mt={12} alignItems='start' direction='column' gap={2}>
-					<Text fontSize='sm' color='rgb(240, 240, 240, 0.7)'>
-						Your nickname
-					</Text>
-					<Input
-						color='white'
-						variant='flushed'
-						fontSize='xl'
-						width={220}
-						maxLength={20}
-						defaultValue={nickname}
-						onBlur={(e) => changeNickname(e.target.value)}
-					/>
-				</Flex>
+				<OptionsMenu />
 			</Flex>
 		</Flex>
 	)

@@ -10,7 +10,7 @@ import {
 	Button,
 	useToast,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, cloneElement } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import GreenButton from './Button/GreenButton'
@@ -28,7 +28,7 @@ type Challenge = {
 	word: string
 }
 
-export default function RecentChallengesDrawer() {
+export default function RecentChallengesDrawer({ DrawerButtonComponent }: { DrawerButtonComponent: React.ReactElement }) {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const navigate = useNavigate()
 	const toast = useToast()
@@ -53,9 +53,10 @@ export default function RecentChallengesDrawer() {
 
 	return (
 		<>
-			<GreenButton onClick={onOpen} size='md'>
-				Find A Challenge
-			</GreenButton>
+			{/* Adds the open drawer functionality to whatever button we want to use as the button to open the drawer */}
+			{cloneElement(DrawerButtonComponent, {
+				onClick: onOpen,
+			})}
 			<Drawer isOpen={isOpen} placement='right' onClose={onClose}>
 				<DrawerOverlay />
 				<DrawerContent color='white' bg='rgb(49, 46, 43)'>
@@ -100,7 +101,12 @@ export default function RecentChallengesDrawer() {
 									alignItems='start'
 									borderRadius='4px'
 									bg='rgb(40, 36, 33)'
-									_hover={{ bg: 'rgb(256, 256, 256, 0.05)' }}
+									_hover={{
+										bg: 'rgb(256, 256, 256, 0.05)',
+										outline: '2px solid rgb(256, 256, 256, 0.15)',
+										boxShadow: 'none',
+										outlineOffset: 0,
+									}}
 									padding='20px'
 									height='fit-content'
 									width='100%'
