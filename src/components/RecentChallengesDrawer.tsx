@@ -9,14 +9,17 @@ import {
 	Text,
 	Button,
 	useToast,
+	Divider,
+	SimpleGrid,
 } from '@chakra-ui/react'
-import { useEffect, useState, cloneElement } from 'react'
+import { useEffect, useState, cloneElement, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import GreenButton from './Button/GreenButton'
 
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import UserContext from '../contexts/UserContext'
 
 dayjs.extend(relativeTime)
 
@@ -26,6 +29,8 @@ type Challenge = {
 	creator: string
 	num_attempts: number
 	word: string
+	completed_status: 'won' | 'lost' | 'inprogress' | 'noattempt'
+	num_guesses: number
 }
 
 export default function RecentChallengesDrawer({ DrawerButtonComponent }: { DrawerButtonComponent: React.ReactElement }) {
@@ -33,11 +38,13 @@ export default function RecentChallengesDrawer({ DrawerButtonComponent }: { Draw
 	const navigate = useNavigate()
 	const toast = useToast()
 	const [recentChallenges, setRecentChallenges] = useState<Challenge[]>([])
+	const { userID } = useContext(UserContext)
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get(`games/challenges/recent/0`)
+				console.log(userID)
+				const response = await axios.get(`games/challenges/recent/0`, { params: { user_id: userID } })
 				const data = response.data
 				setRecentChallenges([...data])
 				// Handle the retrieved data
@@ -57,7 +64,7 @@ export default function RecentChallengesDrawer({ DrawerButtonComponent }: { Draw
 			{cloneElement(DrawerButtonComponent, {
 				onClick: onOpen,
 			})}
-			<Drawer isOpen={isOpen} placement='right' onClose={onClose}>
+			<Drawer isOpen={isOpen} placement='right' onClose={onClose} size={{ base: 'xs', md: 'sm' }}>
 				<DrawerOverlay />
 				<DrawerContent color='white' bg='rgb(49, 46, 43)'>
 					<DrawerCloseButton />
@@ -91,6 +98,8 @@ export default function RecentChallengesDrawer({ DrawerButtonComponent }: { Draw
 					>
 						{recentChallenges.map((challenge: Challenge, index: number) => {
 							const formattedDate = dayjs(challenge.created_at).fromNow()
+							const status = challenge.completed_status
+							const numGuesses = challenge.num_guesses
 
 							return (
 								<Button
@@ -118,14 +127,37 @@ export default function RecentChallengesDrawer({ DrawerButtonComponent }: { Draw
 									}}
 								>
 									<Text mb={4} textAlign='start' whiteSpace='pre-wrap' lineHeight='25px'>
-										<b style={{ fontSize: 16 }}>{formattedDate}</b> by{' '}
-										<b style={{ fontSize: 16, color: '#4cd137' }}>{challenge.creator}</b>
+										{formattedDate} by <b style={{ fontSize: 16 }}>{challenge.creator}</b>
 									</Text>
-									<Text color='#4cd137' fontSize='16px' fontWeight='bold'></Text>
-									<Text fontSize='sm'>
+									<Text fontSize='sm' mb={4}>
 										<b style={{ fontSize: 16 }}>{challenge.num_attempts}</b> other player
 										{challenge.num_attempts !== 1 && 's'}
 									</Text>
+
+									{status !== 'noattempt' && <Divider mb={2} borderColor='whiteAlpha.400' />}
+
+									{/* WON GAME MESSAGE */}
+									{status === 'won' && (
+										<Text fontSize='14px' fontWeight='bold'>
+											<span style={{ color: '#4cd137', fontSize: '16px', marginRight: 4 }}>WON</span> in {numGuesses}
+										</Text>
+									)}
+
+									{/* IN PROGRESS MESSAGE */}
+									{status === 'inprogress' && (
+										<Text fontSize='14px' fontWeight='bold'>
+											<span style={{ color: '#ECC94B', fontSize: '16px', marginRight: 4 }}>IN PROGRESS </span>
+											{6 - numGuesses} guess
+											{6 - numGuesses !== 1 && 'es'} left
+										</Text>
+									)}
+
+									{/* LOST GAME MESSAGE */}
+									{status === 'lost' && (
+										<Text fontSize='16px' fontWeight='bold' color='#F56565'>
+											LOST
+										</Text>
+									)}
 								</Button>
 							)
 						})}
@@ -135,7 +167,9 @@ export default function RecentChallengesDrawer({ DrawerButtonComponent }: { Draw
 								margin='20px auto 0 auto'
 								onClick={async () => {
 									try {
-										const response = await axios.get(`games/challenges/recent/${recentChallenges.length}`)
+										const response = await axios.get(`games/challenges/recent/${recentChallenges.length}`, {
+											params: { user_id: userID },
+										})
 										const data = response.data
 										setRecentChallenges([...recentChallenges, ...data])
 									} catch (e) {
