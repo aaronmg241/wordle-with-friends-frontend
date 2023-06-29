@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import UserContext from '../contexts/UserContext'
-import { words } from '../wordle/words.ts'
+import { validWords } from '../wordle/words.ts'
 
 const useCreateChallenge = () => {
 	const { userID } = useContext(UserContext)
@@ -33,7 +33,7 @@ const useCreateChallenge = () => {
 		try {
 			const response = await axios.post(`/games/challenges/create/${userID}`, {
 				creator: 'app',
-				word: words[Math.floor(Math.random() * words.length)],
+				word: validWords[Math.floor(Math.random() * validWords.length)],
 			})
 
 			navigate(`/challenges/${response.data.challenge_id}`)
