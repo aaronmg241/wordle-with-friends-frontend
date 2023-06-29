@@ -28,3 +28,15 @@ export function calcResultOfGuess(guess: string, correctWord: string) {
 
 	return result
 }
+
+// Checks whether the correct word was guessed or not
+export function gameWasWon(results: number[][]): boolean {
+	return (
+		results.findIndex((resultRow) => {
+			for (const result of resultRow) {
+				if (result !== 2) return false
+			}
+			return true
+		}) >= 0
+	)
+}

@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, useToast } from '@chakra-ui/react'
 import { useState, useEffect, useRef, useContext } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
@@ -6,7 +6,7 @@ import axios from 'axios'
 import OtherAttempts from '../components/OtherAttempts'
 import LetterBox from '../components/LetterBox'
 
-import { calcResultOfGuess } from '../lib/wordle'
+import { calcResultOfGuess, gameWasWon } from '../lib/wordle'
 import UserContext from '../contexts/UserContext'
 import Keyboard from '../components/Keyboard'
 import { SocketContext } from '../contexts/SocketContext'
@@ -21,21 +21,25 @@ export default function ChallengePage() {
 	const { userID, isNewUser, setIsNewUser } = useContext(UserContext)
 	const { setChallengeID, sendMessage } = useContext(SocketContext)
 
+	const toast = useToast()
+
 	if (!challenge) {
 		return <div>Invalid challenge ID.</div>
 	}
 
 	// Game is over if you have used 6 guesses or if you have guessed the correct word (green letter in every spot)
-	const isGameOver =
-		(results[5][0] !== null && results[5][0] !== undefined) ||
-		results.findIndex((resultRow) => {
-			for (const result of resultRow) {
-				if (result !== 2) return false
-			}
-			return true
-		}) >= 0
+	const wonGame = gameWasWon(results)
+	const isGameOver = (results[5][0] !== null && results[5][0] !== undefined) || wonGame
 
-	console.log(isGameOver, results)
+	if (wonGame) {
+	} else if (isGameOver) {
+		// toast({
+		// 	title: 'Good try! Better luck next time',
+		// 	duration: 3000,
+		// 	status: 'info',
+		// 	position: 'top',
+		// })
+	}
 
 	// It is a obviously a bit unusual to add and remove an event listener on every key press. This is done so that onKeyPress has access to the updated
 	// state such as 'guesses'. The alternative is to useRefs to reference the required state in these functions. I chose this approach because the performance
@@ -48,13 +52,11 @@ export default function ChallengePage() {
 		}
 	}, [guesses])
 
-	// Sets the ChallengeID for the websocket connection
-	useEffect(() => {
-		setChallengeID(challenge.data.challenge_id)
-	}, [challenge])
-
 	// Loads existing guesses from server
 	useEffect(() => {
+		// Sets the ChallengeID for the websocket connection
+		setChallengeID(challenge.data.challenge_id)
+
 		const getGuesses = async () => {
 			if (!userID) return
 
@@ -152,7 +154,7 @@ export default function ChallengePage() {
 		<Flex
 			justifyContent={{ base: 'start', lg: 'center' }}
 			gap='5vw'
-			alignItems={{ base: 'center', sm: 'start' }}
+			alignItems={{ base: 'center', lg: 'start' }}
 			direction={{ base: 'column', lg: 'row' }}
 			minHeight='100vh'
 			padding='10vh 0 5vh'
@@ -171,7 +173,7 @@ export default function ChallengePage() {
 				})}
 				<Keyboard results={results} guesses={guesses} />
 			</Flex>
-			<Flex direction='column' gap='30px' alignItems='start' alignSelf='start' pl={2}>
+			<Flex direction='column' gap='30px' alignItems='inherit'>
 				<OptionsMenu includeShareButton />
 				<OtherAttempts word={challenge.data.word} isGameOver={isGameOver} />
 			</Flex>

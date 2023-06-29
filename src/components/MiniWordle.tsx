@@ -17,7 +17,9 @@ export default function MiniWordle({ guesses, word, name, isGameOver }: Props) {
 	}
 	return (
 		<Flex direction='column' gap={1}>
-			<Text>{name}</Text>
+			<Text noOfLines={1} color='white'>
+				{name}
+			</Text>
 			{guessesCopy.map((guess, rowIndex) => {
 				const result = calcResultOfGuess(guess, word)
 				return (

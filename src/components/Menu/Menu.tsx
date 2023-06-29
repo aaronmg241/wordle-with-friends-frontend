@@ -19,7 +19,7 @@ export default function OptionsMenu({ includeShareButton }: Props) {
 
 	return (
 		<>
-			<SimpleGrid bg='transparent' color='white' as={SimpleGrid} columns={2} gridRowGap={4} gridColumnGap={4} p={2}>
+			<SimpleGrid bg='transparent' color='white' as={SimpleGrid} columns={2} gridRowGap={4} gridColumnGap={4}>
 				<MenuGridButton onClick={createChallenge} icon={<AddIcon boxSize={4} />}>
 					Create Challenge
 				</MenuGridButton>

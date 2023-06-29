@@ -6,6 +6,7 @@ import axios from 'axios'
 import MiniWordle from './MiniWordle'
 import UserContext from '../contexts/UserContext'
 import { SocketContext } from '../contexts/SocketContext'
+import useScreenDimensions from '../hooks/useScreenDimensions'
 
 type Props = {
 	word: string
@@ -23,6 +24,7 @@ export default function OtherAttempts({ word, isGameOver }: Props) {
 	const [attempts, setAttempts] = useState<{ [userId: string]: Attempt }>({})
 	const { userID, nickname } = useContext(UserContext)
 	const { newMessage } = useContext(SocketContext)
+	const screenDimensions = useScreenDimensions()
 
 	// Loads all other attempts for this challenge
 	useEffect(() => {
@@ -76,7 +78,7 @@ export default function OtherAttempts({ word, isGameOver }: Props) {
 					</Text>
 				</Box>
 			</CardHeader>
-			<CardBody maxH='80vh' overflowY={'auto'}>
+			<CardBody>
 				<Flex
 					direction='column'
 					maxHeight='80vh'
@@ -86,13 +88,40 @@ export default function OtherAttempts({ word, isGameOver }: Props) {
 					pr={8}
 					boxSizing='border-box'
 					alignItems='center'
+					css={{
+						'&::-webkit-scrollbar': {
+							width: '8px',
+							marginRight: 12,
+						},
+						'&::-webkit-scrollbar-track': {
+							backgroundColor: 'transparent',
+							borderRadius: '3px',
+						},
+
+						'&::-webkit-scrollbar-thumb': {
+							backgroundColor: 'rgb(30, 25, 22)',
+							borderRadius: '3px',
+						},
+
+						'&::-webkit-scrollbar-thumb:hover': {
+							backgroundColor: 'rgba(0, 0, 0, 0.3)',
+						},
+					}}
 				>
-					<SimpleGrid columns={{ base: 2, md: 3 }} columnGap={10} rowGap={5}>
+					<SimpleGrid
+						columns={{ base: Math.floor(screenDimensions.width / 160), md: Math.floor(screenDimensions.width / 2 / 150) }}
+						columnGap={10}
+						rowGap={5}
+					>
 						{Object.entries(attempts).map(([userID, attempt]) => {
 							return (
 								<Box key={userID}>
-									<Text color='white'>{attempt.user.nickname}</Text>
-									<MiniWordle guesses={attempt.guesses} word={word} name='' isGameOver={isGameOver} />
+									<MiniWordle
+										guesses={attempt.guesses}
+										word={word}
+										name={attempt.user.nickname}
+										isGameOver={isGameOver}
+									/>
 								</Box>
 							)
 						})}
