@@ -6,10 +6,10 @@ import axios from 'axios'
 import MiniWordle from './MiniWordle'
 import UserContext from '../contexts/UserContext'
 import { SocketContext } from '../contexts/SocketContext'
-import OptionsMenu from './Menu/Menu'
 
 type Props = {
 	word: string
+	isGameOver: boolean
 }
 
 type Attempt = {
@@ -17,7 +17,7 @@ type Attempt = {
 	user: { user_id: string; nickname: string }
 }
 
-export default function OtherAttempts({ word }: Props) {
+export default function OtherAttempts({ word, isGameOver }: Props) {
 	const challenge = useLoaderData() as any
 	const challengeID = challenge.data.challenge_id
 	const [attempts, setAttempts] = useState<{ [userId: string]: Attempt }>({})
@@ -87,12 +87,12 @@ export default function OtherAttempts({ word }: Props) {
 					boxSizing='border-box'
 					alignItems='center'
 				>
-					<SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} columnGap={10} rowGap={5}>
+					<SimpleGrid columns={{ base: 2, md: 3 }} columnGap={10} rowGap={5}>
 						{Object.entries(attempts).map(([userID, attempt]) => {
 							return (
 								<Box key={userID}>
 									<Text color='white'>{attempt.user.nickname}</Text>
-									<MiniWordle guesses={attempt.guesses} word={word} name='' />
+									<MiniWordle guesses={attempt.guesses} word={word} name='' isGameOver={isGameOver} />
 								</Box>
 							)
 						})}

@@ -1,6 +1,18 @@
 import { Flex } from '@chakra-ui/react'
 
-export default function LetterBox({ letter, result, small, index }: { letter: string; result: number; small?: boolean; index?: number }) {
+export default function LetterBox({
+	letter,
+	result,
+	small,
+	index,
+	isGameOver,
+}: {
+	letter: string
+	result: number
+	small?: boolean
+	index?: number
+	isGameOver?: boolean
+}) {
 	let resultClassName
 
 	switch (result) {
@@ -27,14 +39,14 @@ export default function LetterBox({ letter, result, small, index }: { letter: st
 			maxHeight='12vw'
 			justifyContent='center'
 			alignItems='center'
-			fontSize='150%'
+			fontSize={isGameOver ? '14px' : '150%'}
 			fontWeight='bold'
 			textTransform='uppercase'
 			className={resultClassName}
 			outline={small ? 'none' : undefined}
 			style={{ animationDelay: delay, transitionDelay: delay }}
 		>
-			{small ? '' : letter}
+			{small && !isGameOver ? '' : letter}
 		</Flex>
 	)
 }
