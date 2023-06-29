@@ -1,6 +1,6 @@
 import { Flex, Text } from '@chakra-ui/react'
 import LetterBox from './LetterBox'
-import { calcResultOfGuess } from '../lib/wordle'
+import { calcResultOfGuess } from '../../lib/wordle'
 
 type Props = {
 	guesses: string[]

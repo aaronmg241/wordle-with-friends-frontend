@@ -4,9 +4,9 @@ import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
 
 import MiniWordle from './MiniWordle'
-import UserContext from '../contexts/UserContext'
-import { SocketContext } from '../contexts/SocketContext'
-import useScreenDimensions from '../hooks/useScreenDimensions'
+import UserContext from '../../contexts/UserContext'
+import { SocketContext } from '../../contexts/SocketContext'
+import useScreenDimensions from '../../hooks/useScreenDimensions'
 
 type Props = {
 	word: string

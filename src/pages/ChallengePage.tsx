@@ -3,12 +3,12 @@ import { useState, useEffect, useRef, useContext } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import axios from 'axios'
 
-import OtherAttempts from '../components/OtherAttempts'
-import LetterBox from '../components/LetterBox'
+import OtherAttempts from '../components/WordleChallenge/OtherAttempts'
+import LetterBox from '../components/WordleChallenge/LetterBox'
 
 import { calcResultOfGuess, gameWasWon } from '../lib/wordle'
 import UserContext from '../contexts/UserContext'
-import Keyboard from '../components/Keyboard'
+import Keyboard from '../components/WordleChallenge/Keyboard'
 import { SocketContext } from '../contexts/SocketContext'
 import ChangeNicknameModal from '../components/ChangeNicknameModal'
 import OptionsMenu from '../components/Menu/Menu'
@@ -23,10 +23,6 @@ export default function ChallengePage() {
 	const { setChallengeID, sendMessage } = useContext(SocketContext)
 
 	const toast = useToast()
-
-	if (!challenge) {
-		return <div>Invalid challenge ID.</div>
-	}
 
 	// Game is over if you have used 6 guesses or if you have guessed the correct word (green letter in every spot)
 	const wonGame = gameWasWon(results)
