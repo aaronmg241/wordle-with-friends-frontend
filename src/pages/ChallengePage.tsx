@@ -12,6 +12,7 @@ import Keyboard from '../components/Keyboard'
 import { SocketContext } from '../contexts/SocketContext'
 import ChangeNicknameModal from '../components/ChangeNicknameModal'
 import OptionsMenu from '../components/Menu/Menu'
+import { doesWordExist } from '../lib/search'
 
 export default function ChallengePage() {
 	const challenge = useLoaderData() as any
@@ -29,17 +30,7 @@ export default function ChallengePage() {
 
 	// Game is over if you have used 6 guesses or if you have guessed the correct word (green letter in every spot)
 	const wonGame = gameWasWon(results)
-	const isGameOver = (results[5][0] !== null && results[5][0] !== undefined) || wonGame
-
-	if (wonGame) {
-	} else if (isGameOver) {
-		// toast({
-		// 	title: 'Good try! Better luck next time',
-		// 	duration: 3000,
-		// 	status: 'info',
-		// 	position: 'top',
-		// })
-	}
+	const isGameOver = position.current.row > 5 || wonGame
 
 	// It is a obviously a bit unusual to add and remove an event listener on every key press. This is done so that onKeyPress has access to the updated
 	// state such as 'guesses'. The alternative is to useRefs to reference the required state in these functions. I chose this approach because the performance
@@ -137,14 +128,60 @@ export default function ChallengePage() {
 	function handleEnterPressed(e: KeyboardEvent) {
 		e.preventDefault()
 
-		// If the word has a letter in the last spot then it must be 5 letters long
-		if (!guesses[position.current.row][4] || guesses[position.current.row][4] === '') return
+		toast.closeAll({ positions: ['top'] })
 
 		const guess = guesses[position.current.row].join('')
+
+		// Checks if the word is 5 letters long
+		// If the word has a letter in the last spot then it must be 5 letters long
+		if (!guesses[position.current.row][4] || guesses[position.current.row][4] === '') {
+			toast({
+				status: 'info',
+				title: 'Word must be 5 letters long.',
+				duration: 2500,
+				position: 'top',
+			})
+			return
+		}
+
+		if (!doesWordExist(guess)) {
+			toast({
+				status: 'info',
+				title: 'Invalid word.',
+				duration: 2500,
+				position: 'top',
+			})
+			return
+		}
 
 		const newResults = [...results]
 		newResults[position.current.row] = calcResultOfGuess(guess, challenge.data.word)
 		setResults(newResults)
+
+		if (gameWasWon(newResults)) {
+			setTimeout(
+				() =>
+					toast({
+						status: 'info',
+						title: 'Congratulations! You guessed the correct word.',
+						duration: 2500,
+						position: 'top',
+					}),
+				2000
+			)
+		} else if (position.current.row === 5) {
+			setTimeout(
+				() =>
+					toast({
+						status: 'info',
+						title: 'Better luck next time.',
+						duration: 2500,
+						position: 'top',
+					}),
+				2000
+			)
+		}
+
 		position.current = { row: position.current.row + 1, column: 0 }
 
 		sendMessage({ challengeID: challenge.data.challenge_id, guess, userID })
