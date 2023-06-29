@@ -109,7 +109,7 @@ export default function OtherAttempts({ word, isGameOver }: Props) {
 					}}
 				>
 					<SimpleGrid
-						columns={{ base: Math.floor(screenDimensions.width / 160), md: Math.floor(screenDimensions.width / 2 / 150) }}
+						columns={{ base: Math.floor(screenDimensions.width / 150), md: Math.floor(screenDimensions.width / 2 / 150) }}
 						columnGap={10}
 						rowGap={5}
 					>

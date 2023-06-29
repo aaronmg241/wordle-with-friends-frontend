@@ -33,13 +33,13 @@ export default function LetterBox({
 
 	return (
 		<Flex
-			height={small ? '20px' : '60px'}
-			width={small ? '20px' : '60px'}
+			height={small ? '20px' : { base: '45px', md: '60px' }}
+			width={small ? '20px' : { base: '45px', md: '60px' }}
 			maxWidth='12vw'
 			maxHeight='12vw'
 			justifyContent='center'
 			alignItems='center'
-			fontSize={isGameOver ? '14px' : '150%'}
+			fontSize={small ? '14px' : { base: '16px', md: '150%' }}
 			fontWeight='bold'
 			textTransform='uppercase'
 			className={resultClassName}
