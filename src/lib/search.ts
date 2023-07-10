@@ -1,5 +1,6 @@
 import { validGuesses, validWords } from '../wordle/words'
 
+// Checks if it the guess is in validGuesses or validWords
 export function doesWordExist(guess: string): boolean {
 	return binarySearch(guess, validWords) || binarySearch(guess, validGuesses)
 }
