@@ -2317,7 +2317,7 @@ export const validWords = [
 	'zonal',
 ]
 
-export const words = [
+export const validGuesses = [
 	'aahed',
 	'aalii',
 	'aargh',

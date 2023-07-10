@@ -10,7 +10,6 @@ import {
 	Button,
 	useToast,
 	Divider,
-	SimpleGrid,
 } from '@chakra-ui/react'
 import { useEffect, useState, cloneElement, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'

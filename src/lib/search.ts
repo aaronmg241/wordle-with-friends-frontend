@@ -1,12 +1,15 @@
-import { words } from '../wordle/words'
+import { validGuesses, validWords } from '../wordle/words'
 
-export function doesWordExist(guess: string) {
+export function doesWordExist(guess: string): boolean {
+	return binarySearch(guess, validWords) || binarySearch(guess, validGuesses)
+}
+
+export function binarySearch(guess: string, words: string[]): boolean {
 	let start = 0
 	let end = words.length - 1
 
 	while (start <= end) {
 		let mid = Math.floor((start + end) / 2)
-
 		if (words[mid] === guess) {
 			return true
 		}
